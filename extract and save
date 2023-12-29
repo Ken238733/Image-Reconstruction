@@ -1,0 +1,36 @@
+import cv2
+
+def extract_and_save_region(input_image_path, mask_path, output_image_path):
+    # Load an image
+    image = cv2.imread(input_image_path)
+
+    # Load a mask (can be a binary image, where 255 represents the regions you want to keep)
+    mask = cv2.imread(mask_path, cv2.IMREAD_GRAYSCALE)
+
+    # Check if the image and mask were loaded successfully
+    if image is not None and mask is not None:
+        # Make sure the mask is binary (0 or 255 values)
+        mask = cv2.threshold(mask, 1, 255, cv2.THRESH_BINARY)[1]
+
+        # Extract pixels from the image using the mask
+        result = cv2.bitwise_and(image, image, mask=mask)
+
+        # Display the result
+        cv2.imshow('Extracted Image', result)
+
+        # Save the extracted image
+        cv2.imwrite(output_image_path, result)
+
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+
+    else:
+        print("Image or mask not found or could not be loaded.")
+
+# Define the paths for the input image, mask, and output image
+input_image_path = 'C:\\Users\\Ken23\\Documents\\35.png'
+mask_path = 'C:\\Users\\Ken23\\PycharmProjects\\pythonProject30\\output_image74.png'
+output_image_path = 'C:\\Users\\Ken23\\Documents\\lines through midpoint\\(74) through midpoint.png'  # Change this to your desired output path
+
+# Call the function to extract and save the region
+extract_and_save_region(input_image_path, mask_path, output_image_path)
